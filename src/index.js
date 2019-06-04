@@ -45,6 +45,51 @@ export function bindStyle(pipe, rule) {
 };
 
 /**
+ * Swap elements based on the value send from a pipe
+ *
+ * The first element is will be the default. The second element is the
+ * alternative. The third argument is a pipe object (see `helpers/pipe.js`) and
+ * it is expected that it transmits Boolean values.
+ *
+ * The value from the pipe is interpreted as follows:
+ *
+ * - `false` is default
+ * - `true` is alternative
+ *
+ * When the pipe value is `false`, the default element replaces the alternative
+ * one (or is kept in the tree if already present). Otherwise, the alternative
+ * one is inserted/kept instead.
+ */
+export function hotswap(defaultEl, elAlt, pipe) {
+  function swapElements(old, next) {
+    if (!old.parentNode) {
+      return;
+    }
+
+    if (old.removeClass) {
+      function afterAnimation() {
+        old.parentNode.replaceChild(next, old);
+        old.classList.remove(old.removeClass);
+        old.removeEventListener('animationend', afterAnimation, false);
+      }
+      old.addEventListener('animationend', afterAnimation, false);
+      old.classList.add(old.removeClass);
+    } else {
+      old.parentNode.replaceChild(next, old);
+    }
+  }
+
+  pipe.connect(function (flag) {
+    if (flag) {
+      swapElements(defaultEl, elAlt);
+    } else {
+      swapElements(elAlt, defaultEl);
+    }
+  });
+  return defaultEl;
+};
+
+/**
  * Create a list of child nodes that can be updated using a pipe
  */
 export function bindChildren(

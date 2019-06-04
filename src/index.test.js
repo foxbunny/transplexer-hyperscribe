@@ -1,12 +1,12 @@
 import pipe from 'transplexer';
-import {div, button, ul, li} from 'hyperscribe';
+import {div, button, ul, li, span} from 'hyperscribe';
 import {prettyPrint} from 'html';
 import {
   bind,
   bindClass,
   bindProp,
   bindStyle,
-  bindList,
+  hotswap,
   bindChildren,
 } from './index';
 
@@ -107,6 +107,75 @@ describe('bindStyle', function () {
     p.send('white');
 
     expect(el.style.background).toBe('white');
+  });
+
+});
+
+describe('hotswap', function () {
+
+  test('will render the default', function () {
+    const p = pipe();
+    const def = div();
+    const alt = span();
+
+    const res = hotswap(def, alt, p);
+
+    expect(res).toBe(def);
+  });
+
+  test('will render the alt element once pipe is updated', function () {
+    const p = pipe();
+    const def = div();
+    const alt = span();
+
+    const parent = div(hotswap(def, alt, p));
+    p.send(true);
+
+    expect(parent.firstChild).toBe(alt);
+    expect(def.parentNode).toBe(null);
+  });
+
+  test('will keep the alt element if pipe does not toggle', function () {
+    const p = pipe();
+    const def = div();
+    const alt = span();
+
+    const parent = div(hotswap(def, alt, p));
+    p.send(true);
+    p.send(true);
+
+    expect(parent.firstChild).toBe(alt);
+    expect(def.parentNode).toBe(null);
+  });
+
+  test('will swap back to default if pipe toggles', function () {
+    const p = pipe();
+    const def = div();
+    const alt = span();
+
+    const parent = div(hotswap(def, alt, p));
+    p.send(true);
+    p.send(false);
+
+    expect(parent.firstChild).toBe(def);
+    expect(alt.parentNode).toBe(null);
+  });
+
+  test('swap with a delay if element has a removeClass prop', function () {
+    const p = pipe();
+    const def = div({removeClass: 'foo'});
+    const alt = span();
+
+    const parent = div(hotswap(def, alt, p));
+    p.send(true);
+
+    expect(parent.firstChild).toBe(def);
+    expect(def.classList.contains('foo')).toBe(true);
+
+    def.dispatchEvent(new Event('animationend'));
+
+    expect(parent.firstChild).toBe(alt);
+    expect(def.classList.contains('foo')).toBe(false);
   });
 
 });
