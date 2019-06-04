@@ -1959,10 +1959,10 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-hyperscribe@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/hyperscribe/-/hyperscribe-1.0.0.tgz#43adb5474201cb5eb6bf8d15f1b2edc7838a8404"
-  integrity sha512-8IkhJmFl1QlGPvDCddpQ3KLOpYIK9iDA+CSW6Gywzms7n/mtO0leeCmyft7w5jRdBPUsxNK90xPeuZ8Uq5amzA==
+hyperscribe@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/hyperscribe/-/hyperscribe-1.0.1.tgz#6d771cdc2a15416a6241d91c2bb4d59da4b35ee4"
+  integrity sha512-XDEIYI5S5dw/clnOrY5dFkl51EHsz4OKDPB4Q0EKVAqQQESoScO8ZfFCq1a0NwKrkfeOp/LFEftfKnbOIzDGaA==
   dependencies:
     core-js "2"
 

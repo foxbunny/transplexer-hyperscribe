@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`bindChildren append item 1`] = `
+exports[`dynamicList append item 1`] = `
 "<ul>
     <li>John</li>
     <li>Jane</li>
@@ -8,21 +8,21 @@ exports[`bindChildren append item 1`] = `
 </ul>"
 `;
 
-exports[`bindChildren change order 1`] = `
+exports[`dynamicList change order 1`] = `
 "<ul>
     <li>Jane</li>
     <li>John</li>
 </ul>"
 `;
 
-exports[`bindChildren create a list of child nodes 1`] = `
+exports[`dynamicList create a list of child nodes 1`] = `
 "<ul>
     <li>John</li>
     <li>Jane</li>
 </ul>"
 `;
 
-exports[`bindChildren insert item 1`] = `
+exports[`dynamicList insert item 1`] = `
 "<ul>
     <li>John</li>
     <li>Jane</li>
@@ -30,13 +30,13 @@ exports[`bindChildren insert item 1`] = `
 </ul>"
 `;
 
-exports[`bindChildren pop item 1`] = `
+exports[`dynamicList pop item 1`] = `
 "<ul>
     <li>John</li>
 </ul>"
 `;
 
-exports[`bindChildren updating a property of a member 1`] = `
+exports[`dynamicList updating a property of a member 1`] = `
 "<ul>
     <li>Ben</li>
     <li>Jane</li>

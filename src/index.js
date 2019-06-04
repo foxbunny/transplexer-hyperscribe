@@ -1,5 +1,28 @@
 import createPipe from 'transplexer';
+import {addProps} from 'hyperscribe';
 import {editList} from './editList';
+import {onTransimationEnd} from './util';
+
+/**
+ * Assign a value at a given path inside an object
+ *
+ * The path is given as an array of key names, where the last key points to the
+ * value, and intermediate keys point to nested objects.
+ *
+ * For example:
+ *
+ *     const obj = {};
+ *     assignPath(obj, ['foo', 'bar', 'baz'], 1);
+ *     // obj is now `{foo: {bar: {baz: 1}}}`
+ */
+function assignPath(obj, path, val) {
+  if (path.length === 0) {
+    return val;
+  }
+  const [head, ...rest] = path;
+  obj[head] = assignPath(obj, rest, val);
+  return obj;
+}
 
 /**
  * Create a hook that binds a callback to an element using a pipe
@@ -15,7 +38,7 @@ export function bind(pipe, fn) {
 /**
  * Create a hook that toggles a single class using a pipe
  */
-export function bindClass(pipe, className) {
+export function toggleClass(pipe, className) {
   return bind(pipe, function (flag, el) {
     if (flag) {
       el.classList.add(className);
@@ -28,19 +51,18 @@ export function bindClass(pipe, className) {
 
 /**
  * Create a hook that sets a property on an element using a pipe
+ *
+ * The second argument, property name, is actually a dot-separated path (e.g.,
+ * `style.backgroundImage`). The way props are assigned is the same as with
+ * hyperscribe itself.
+ *
+ * More [here](https://github.com/foxbunny/hyperscribe#properties).
  */
-export function bindProp(pipe, propName) {
-  return bind(pipe, function (value, el) {
-    el[propName] = value;
-  });
-};
+export function dynamicProp(pipe, propName) {
+  const path = propName.split('.');
 
-/**
- * Create a hook that changes style properties using a pipe
- */
-export function bindStyle(pipe, rule) {
   return bind(pipe, function (value, el) {
-    el.style[rule] = value;
+    addProps(assignPath({}, path, value), el);
   });
 };
 
@@ -60,19 +82,18 @@ export function bindStyle(pipe, rule) {
  * one (or is kept in the tree if already present). Otherwise, the alternative
  * one is inserted/kept instead.
  */
-export function hotswap(defaultEl, elAlt, pipe) {
+export function hotswap(pipe, defaultEl, altEl) {
   function swapElements(old, next) {
     if (!old.parentNode) {
       return;
     }
 
     if (old.removeClass) {
-      function afterAnimation() {
+      const removeListener = onTransimationEnd(old, function (e) {
         old.parentNode.replaceChild(next, old);
         old.classList.remove(old.removeClass);
-        old.removeEventListener('animationend', afterAnimation, false);
-      }
-      old.addEventListener('animationend', afterAnimation, false);
+        removeListener();
+      });
       old.classList.add(old.removeClass);
     } else {
       old.parentNode.replaceChild(next, old);
@@ -81,9 +102,9 @@ export function hotswap(defaultEl, elAlt, pipe) {
 
   pipe.connect(function (flag) {
     if (flag) {
-      swapElements(defaultEl, elAlt);
+      swapElements(defaultEl, altEl);
     } else {
-      swapElements(elAlt, defaultEl);
+      swapElements(altEl, defaultEl);
     }
   });
   return defaultEl;
@@ -92,7 +113,7 @@ export function hotswap(defaultEl, elAlt, pipe) {
 /**
  * Create a list of child nodes that can be updated using a pipe
  */
-export function bindChildren(
+export function dynamicList(
   pipe,
   initialData,
   renderChild,

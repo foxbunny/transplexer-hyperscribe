@@ -1,13 +1,13 @@
 import pipe from 'transplexer';
-import {div, button, ul, li, span} from 'hyperscribe';
+import {div, button, ul, li, span, label} from 'hyperscribe';
 import {prettyPrint} from 'html';
 import {
   bind,
-  bindClass,
-  bindProp,
+  toggleClass,
+  dynamicProp,
   bindStyle,
   hotswap,
-  bindChildren,
+  dynamicList,
 } from './index';
 
 describe('bind', function () {
@@ -29,7 +29,7 @@ describe('toggle class', function () {
 
   test('toggle a class with a pipe', function () {
     const p = pipe();
-    const el = div(bindClass(p, 'test'));
+    const el = div(toggleClass(p, 'test'));
 
     p.send(true);
 
@@ -38,7 +38,7 @@ describe('toggle class', function () {
 
   test('toggle off', function () {
     const p = pipe();
-    const el = div(bindClass(p, 'test'));
+    const el = div(toggleClass(p, 'test'));
 
     p.send(true);
     p.send(false);
@@ -48,7 +48,7 @@ describe('toggle class', function () {
 
   test('toggle off when already off', function () {
     const p = pipe();
-    const el = div(bindClass(p, 'test'));
+    const el = div(toggleClass(p, 'test'));
 
     p.send(false);
 
@@ -57,7 +57,7 @@ describe('toggle class', function () {
 
   test('toggle with truthy value', function () {
     const p = pipe();
-    const el = div(bindClass(p, 'test'));
+    const el = div(toggleClass(p, 'test'));
 
     p.send('yes');
 
@@ -66,7 +66,7 @@ describe('toggle class', function () {
 
   test('toggle off with falsy value', function () {
     const p = pipe();
-    const el = div(bindClass(p, 'test'));
+    const el = div(toggleClass(p, 'test'));
 
     p.send('yes');
     p.send('');
@@ -76,11 +76,11 @@ describe('toggle class', function () {
 
 });
 
-describe('bindProp', function () {
+describe('dynamicProp', function () {
 
   test('set a prop using a pipe', function () {
     const p = pipe();
-    const el = button(bindProp(p, 'disabled'));
+    const el = button(dynamicProp(p, 'disabled'));
 
     p.send(true);
 
@@ -89,24 +89,25 @@ describe('bindProp', function () {
 
   test('set text content', function () {
     const p = pipe();
-    const el = div(bindProp(p, 'textContent'), 'Hello, test!');
+    const el = div(dynamicProp(p, 'textContent'), 'Hello, test!');
 
     p.send('Hello, World!');
 
     expect(el.textContent).toBe('Hello, World!');
   });
 
-});
-
-describe('bindStyle', function () {
-
-  test('change a style rule with a pipe', function () {
+  test('for property', function () {
     const p = pipe();
-    const el = div(bindStyle(p, 'background'));
+    const el = span(dynamicProp(p, 'for'), {for: 'email'});
+    p.send('password');
+    expect(el.htmlFor).toBe('password');
+  });
 
-    p.send('white');
-
-    expect(el.style.background).toBe('white');
+  test('style rule', function () {
+    const p = pipe();
+    const el = span(dynamicProp(p, 'style.backgroundColor'));
+    p.send('blue');
+    expect(el.style.backgroundColor).toBe('blue');
   });
 
 });
@@ -118,7 +119,7 @@ describe('hotswap', function () {
     const def = div();
     const alt = span();
 
-    const res = hotswap(def, alt, p);
+    const res = hotswap(p, def, alt);
 
     expect(res).toBe(def);
   });
@@ -128,7 +129,7 @@ describe('hotswap', function () {
     const def = div();
     const alt = span();
 
-    const parent = div(hotswap(def, alt, p));
+    const parent = div(hotswap(p, def, alt));
     p.send(true);
 
     expect(parent.firstChild).toBe(alt);
@@ -140,7 +141,7 @@ describe('hotswap', function () {
     const def = div();
     const alt = span();
 
-    const parent = div(hotswap(def, alt, p));
+    const parent = div(hotswap(p, def, alt));
     p.send(true);
     p.send(true);
 
@@ -153,7 +154,7 @@ describe('hotswap', function () {
     const def = div();
     const alt = span();
 
-    const parent = div(hotswap(def, alt, p));
+    const parent = div(hotswap(p, def, alt));
     p.send(true);
     p.send(false);
 
@@ -166,7 +167,7 @@ describe('hotswap', function () {
     const def = div({removeClass: 'foo'});
     const alt = span();
 
-    const parent = div(hotswap(def, alt, p));
+    const parent = div(hotswap(p, def, alt));
     p.send(true);
 
     expect(parent.firstChild).toBe(def);
@@ -180,7 +181,7 @@ describe('hotswap', function () {
 
 });
 
-describe('bindChildren', function () {
+describe('dynamicList', function () {
   function renderPerson (person, personPipe) {
     const namePipe = personPipe.extend(function (next) {
       return function(person) {
@@ -188,7 +189,7 @@ describe('bindChildren', function () {
       };
     });
     return li(
-      bindProp(namePipe, 'textContent'),
+      dynamicProp(namePipe, 'textContent'),
       person.name,
     );
   }
@@ -200,7 +201,7 @@ describe('bindChildren', function () {
     ]
     const p = pipe();
     const el = ul(
-      bindChildren(p, initial, renderPerson),
+      dynamicList(p, initial, renderPerson),
     );
 
     expect(prettyPrint(el.outerHTML)).toMatchSnapshot();
@@ -213,7 +214,7 @@ describe('bindChildren', function () {
     ]
     const p = pipe();
     const el = ul(
-      bindChildren(p, initial, renderPerson),
+      dynamicList(p, initial, renderPerson),
     );
 
     const firstChild = el.firstChild;
@@ -231,7 +232,7 @@ describe('bindChildren', function () {
     ]
     const p = pipe();
     const el = ul(
-      bindChildren(p, initial, renderPerson),
+      dynamicList(p, initial, renderPerson),
     );
 
     p.send([
@@ -249,7 +250,7 @@ describe('bindChildren', function () {
     ]
     const p = pipe();
     const el = ul(
-      bindChildren(p, initial, renderPerson),
+      dynamicList(p, initial, renderPerson),
     );
 
     initial.push({name: 'Bob', key: 'bob'});
@@ -265,7 +266,7 @@ describe('bindChildren', function () {
     ]
     const p = pipe();
     const el = ul(
-      bindChildren(p, initial, renderPerson),
+      dynamicList(p, initial, renderPerson),
     );
 
     initial.pop();
@@ -281,7 +282,7 @@ describe('bindChildren', function () {
     ]
     const p = pipe();
     const el = ul(
-      bindChildren(p, initial, renderPerson),
+      dynamicList(p, initial, renderPerson),
     );
 
     initial.splice(1, 0, {name: 'Bob', key: 'bob'});
