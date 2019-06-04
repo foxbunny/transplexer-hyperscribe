@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/foxbunny/transplexer-hyperscribe.svg?branch=master)](https://travis-ci.org/foxbunny/transplexer-hyperscribe)
+
 # Transplexer-Hyperscribe
 
 Transplexer integration for Hyperscribe
