@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`bindChildren append item 1`] = `
+"<ul>
+    <li>John</li>
+    <li>Jane</li>
+    <li>Bob</li>
+</ul>"
+`;
+
+exports[`bindChildren change order 1`] = `
+"<ul>
+    <li>Jane</li>
+    <li>John</li>
+</ul>"
+`;
+
+exports[`bindChildren create a list of child nodes 1`] = `
+"<ul>
+    <li>John</li>
+    <li>Jane</li>
+</ul>"
+`;
+
+exports[`bindChildren insert item 1`] = `
+"<ul>
+    <li>John</li>
+    <li>Jane</li>
+    <li>Bob</li>
+</ul>"
+`;
+
+exports[`bindChildren pop item 1`] = `
+"<ul>
+    <li>John</li>
+</ul>"
+`;
+
+exports[`bindChildren updating a property of a member 1`] = `
+"<ul>
+    <li>Ben</li>
+    <li>Jane</li>
+</ul>"
+`;
