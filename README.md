@@ -25,7 +25,6 @@ efficient DOM manipulation while keeping the runtime footprint relatively low.
   * [Hotswapping DOM nodes](#hotswapping-dom-nodes)
   * [Dynamic text](#dynamic-text)
   * [Managing lists of DOM nodes](#managing-lists-of-dom-nodes)
-* [Utility functions](#utility-functions)
 
 <!-- vim-markdown-toc -->
 
@@ -269,6 +268,3 @@ an algorithm borrowed from [Snabbdom](https://github.com/snabbdom/snabbdom).
 They ensure that minimum amount of shuffling is done in order to update the
 list.
 
-## Utility functions
-
-TODO
