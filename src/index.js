@@ -178,7 +178,7 @@ export function dynamicList(
           delete elementLookup[key];
           delete pipeLookup[key];
         },
-        create: function (key, refrenceKey) {
+        create: function (key, referenceKey) {
           const el = elementLookup[key];
           const ref = elementLookup[referenceKey];
           parentNode.insertBefore(el, ref);

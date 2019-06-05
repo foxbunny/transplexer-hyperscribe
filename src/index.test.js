@@ -291,4 +291,29 @@ describe('dynamicList', function () {
     expect(prettyPrint(el.outerHTML)).toMatchSnapshot();
   });
 
+  test('custom key function', function () {
+    function keyFn(person) {
+      return person.eid;
+    };
+    const initial = [
+      {name: 'John', eid: 33},
+      {name: 'Jane', eid: 61},
+    ]
+    const p = pipe();
+    const el = ul(
+      dynamicList(p, initial, renderPerson, keyFn),
+    );
+    const firstChild = el.firstChild;
+
+    initial[0].name = 'Bob';
+    p.send(initial);
+    expect(el.firstChild).toBe(firstChild);
+    expect(el.firstChild.textContent).toBe('Bob');
+
+    initial[0].eid = 47;
+    p.send(initial);
+    expect(el.firstChild).not.toBe(firstChild);
+    expect(el.firstChild.textContent).toBe('Bob');
+  });
+
 });
