@@ -134,6 +134,28 @@ const CASES = [
       [APPEND, 'F'],
     ],
   ],
+  [
+    'insert',
+    ['A', 'B'],
+    ['A', 'C', 'B'],
+    [
+      [KEEP, 'A'],
+      [KEEP, 'B'],
+      [CREATE, 'C', 'B'],
+    ],
+  ],
+  [
+    'insert multiple',
+    ['A', 'B'],
+    ['A', 'C', 'D', 'E', 'B'],
+    [
+      [KEEP, 'A'],
+      [KEEP, 'B'],
+      [CREATE, 'C', 'B'],
+      [CREATE, 'D', 'B'],
+      [CREATE, 'E', 'B'],
+    ],
+  ],
 ];
 
 // Test handler that simply creates a human-readable edit list

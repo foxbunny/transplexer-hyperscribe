@@ -80,12 +80,25 @@ export function editList(oldKeys, newKeys, handlers) {
 
   if (oldStartIdx <= oldEndIdx || newStartIdx <= newEndIdx) {
     if (oldStartIdx > oldEndIdx) {
-      for (; newStartIdx <= newEndIdx; newStartIdx++)
-        handlers.append(newKeys[newStartIdx]);
-    } else {
+      // If we encounter an item past the last unaccounted-for item, then all
+      // items should be inserted before it.
+      if (newKeys[newEndIdx + 1]) {
+        for (; newStartIdx <= newEndIdx; newStartIdx++) {
+          handlers.create(newKeys[newStartIdx], newKeys[newEndIdx + 1]);
+        }
+      }
+      // Otherwise, we append all items
+      else {
+        for (; newStartIdx <= newEndIdx; newStartIdx++) {
+          handlers.append(newKeys[newStartIdx]);
+        }
+      }
+    }
+    else {
       for (; oldStartIdx <= oldEndIdx; oldStartIdx++) {
-        if (oldKeys[oldStartIdx])
+        if (oldKeys[oldStartIdx]) {
           handlers.remove(oldKeys[oldStartIdx]);
+        }
       }
     }
   }
