@@ -7,6 +7,7 @@ import {
   dynamicProp,
   bindStyle,
   hotswap,
+  dynamicText,
   dynamicList,
 } from './index';
 
@@ -23,7 +24,6 @@ describe('bind', function () {
   });
 
 });
-
 
 describe('toggle class', function () {
 
@@ -177,6 +177,38 @@ describe('hotswap', function () {
 
     expect(parent.firstChild).toBe(alt);
     expect(def.classList.contains('foo')).toBe(false);
+  });
+
+});
+
+describe('dynamicText', function () {
+
+  test('renders a text node', function () {
+    const p = pipe();
+    const el = dynamicText(p, 'Hello, World!');
+
+    expect(el).toBeInstanceOf(Text);
+    expect(el.textContent).toBe('Hello, World!')
+  });
+
+  test('update the text', function () {
+    const p = pipe();
+    const el = dynamicText(p, 'Hello, World!');
+
+    p.send('Hello, hyperscribe!');
+
+    expect(el.textContent).toBe('Hello, hyperscribe!');
+  });
+
+  test('use in a hyperscribe node', function () {
+    const p = pipe();
+    const el = div('Hello, ', dynamicText(p, 'World'), '!');
+
+    expect(el.textContent).toBe('Hello, World!');
+
+    p.send('transplexer');
+
+    expect(el.textContent).toBe('Hello, transplexer!');
   });
 
 });

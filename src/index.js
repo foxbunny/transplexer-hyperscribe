@@ -110,6 +110,14 @@ export function hotswap(pipe, defaultEl, altEl) {
   return defaultEl;
 };
 
+export function dynamicText(pipe, initialText) {
+  const textNode = document.createTextNode(initialText);
+  pipe.connect(function (text) {
+    textNode.textContent = text;
+  });
+  return textNode;
+};
+
 /**
  * Create a list of child nodes that can be updated using a pipe
  */
