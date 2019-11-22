@@ -28,7 +28,7 @@
  *   `referenceKey`.
  * - `append(key)` - append the `key` to the end of the list.
  */
-export function editList(oldKeys, newKeys, handlers) {
+export function editList (oldKeys, newKeys, handlers) {
   let oldStartIdx = 0, newStartIdx = 0;
   let oldEndIdx = oldKeys.length - 1;
   let oldStartKey = oldKeys[0];

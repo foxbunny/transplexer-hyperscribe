@@ -1,13 +1,13 @@
-import {editList} from './editList';
+import { editList } from './editList';
 
-const KEEP = 'keep';
-const MOVE_BEFORE = 'move before';
-const MOVE_AFTER = 'move after';
-const REMOVE = 'remove';
-const CREATE = 'create';
-const APPEND = 'append';
+let KEEP = 'keep';
+let MOVE_BEFORE = 'move before';
+let MOVE_AFTER = 'move after';
+let REMOVE = 'remove';
+let CREATE = 'create';
+let APPEND = 'append';
 
-const CASES = [
+let CASES = [
   [
     'identical lists',
     ['A', 'B', 'C', 'D', 'E'],
@@ -42,7 +42,7 @@ const CASES = [
       [REMOVE, 'C'],
       [REMOVE, 'D'],
       [REMOVE, 'E'],
-    ]
+    ],
   ],
   [
     'complete swap',
@@ -59,7 +59,7 @@ const CASES = [
       [REMOVE, 'C'],
       [REMOVE, 'D'],
       [REMOVE, 'E'],
-    ]
+    ],
   ],
   [
     'swap middle',
@@ -159,29 +159,29 @@ const CASES = [
 ];
 
 // Test handler that simply creates a human-readable edit list
-function accumulator() {
-  const changes = [];
+function accumulator () {
+  let changes = [];
 
   return {
-    keep(key) {
+    keep (key) {
       changes.push([KEEP, key]);
     },
-    moveBefore(key, pos) {
+    moveBefore (key, pos) {
       changes.push([MOVE_BEFORE, key, pos]);
     },
-    moveAfter(key, pos) {
+    moveAfter (key, pos) {
       changes.push([MOVE_AFTER, key, pos]);
     },
-    remove(key) {
+    remove (key) {
       changes.push([REMOVE, key]);
     },
-    create(key, pos) {
+    create (key, pos) {
       changes.push([CREATE, key, pos]);
     },
-    append(key) {
+    append (key) {
       changes.push([APPEND, key]);
     },
-    getChanges() {
+    getChanges () {
       return changes;
     },
   };
@@ -191,7 +191,7 @@ describe('editList', function () {
   test.each(CASES)(
     '%s',
     function (title, oldKeys, newKeys, edits) {
-      const acc = accumulator();
+      let acc = accumulator();
       editList(
         oldKeys.slice(),
         newKeys.slice(),
@@ -199,15 +199,15 @@ describe('editList', function () {
       );
 
       expect(acc.getChanges()).toEqual(edits);
-    }
+    },
   );
 
   test('append', function () {
-    const acc = accumulator();
+    let acc = accumulator();
     editList(
       ['A', 'B', 'C', 'D', 'E'],
       ['A', 'B', 'C', 'D', 'E', 'F'],
-      acc
+      acc,
     );
 
     expect(acc.getChanges()).toEqual([

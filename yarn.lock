@@ -1959,10 +1959,10 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-hyperscribe@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/hyperscribe/-/hyperscribe-1.0.2.tgz#0ef6cfb9e5419fec450025e7abc6495c08620303"
-  integrity sha512-MA/kscWkTd+BaH4l9OQDsJ+cYVXMxEjzBazHMNnyx5mhkUZ1j/hN3hU10j8QxNRW/nhR/gGPJnBY+Ukd28Vm3Q==
+hyperscribe@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/hyperscribe/-/hyperscribe-1.0.3.tgz#17e22c1a4bd184a79f54a03d5677a35da4d496dd"
+  integrity sha512-N9N2K8bXFXIwz8JIw05pX+CZQv9AJApVXyJ91FUvwDguFKpWUe7jCYhwOFL7MxXJkV/ggoaxDp3+tpx0thVrXQ==
   dependencies:
     core-js "2"
 
@@ -4128,10 +4128,10 @@ tr46@^1.0.1:
   dependencies:
     punycode "^2.1.0"
 
-transplexer@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/transplexer/-/transplexer-1.0.1.tgz#397d0b9674fdfd1983678473091d1f942cbc5196"
-  integrity sha512-oIuTdMYMj/QAWNYfTegGX3SG8A6o4r8Lg0QQvKPPYMxMsGjTHVHmN+3Gf5utRB3wfKRr6047/JoX9kjYQvryOA==
+transplexer@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/transplexer/-/transplexer-1.1.0.tgz#de162346ab2ab478e04398c2a83a5d0bae16d4b6"
+  integrity sha512-9/DLLKEdIs7/1lyZF/PchlpIc6jUimv4rF2DD2A5aqB1JtILyUbp5pgearzBQjxFSUTeEOKR9rWg9oyp9tbfYA==
   dependencies:
     core-js "2"
 

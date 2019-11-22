@@ -1,11 +1,10 @@
 import pipe from 'transplexer';
-import {div, button, ul, li, span, label} from 'hyperscribe';
-import {prettyPrint} from 'html';
+import { div, button, ul, li, span } from 'hyperscribe';
+import { prettyPrint } from 'html';
 import {
   bind,
   toggleClass,
   dynamicProp,
-  bindStyle,
   hotswap,
   dynamicText,
   dynamicList,
@@ -14,9 +13,9 @@ import {
 describe('bind', function () {
 
   test('bind arbitrary callback to an object using a pipe', function () {
-    const p = pipe();
-    const f = jest.fn();
-    const el = div(bind(p, f));
+    let p = pipe();
+    let f = jest.fn();
+    let el = div(bind(p, f));
 
     p.send('test');
 
@@ -28,8 +27,8 @@ describe('bind', function () {
 describe('toggle class', function () {
 
   test('toggle a class with a pipe', function () {
-    const p = pipe();
-    const el = div(toggleClass(p, 'test'));
+    let p = pipe();
+    let el = div(toggleClass(p, 'test'));
 
     p.send(true);
 
@@ -37,8 +36,8 @@ describe('toggle class', function () {
   });
 
   test('toggle off', function () {
-    const p = pipe();
-    const el = div(toggleClass(p, 'test'));
+    let p = pipe();
+    let el = div(toggleClass(p, 'test'));
 
     p.send(true);
     p.send(false);
@@ -47,8 +46,8 @@ describe('toggle class', function () {
   });
 
   test('toggle off when already off', function () {
-    const p = pipe();
-    const el = div(toggleClass(p, 'test'));
+    let p = pipe();
+    let el = div(toggleClass(p, 'test'));
 
     p.send(false);
 
@@ -56,8 +55,8 @@ describe('toggle class', function () {
   });
 
   test('toggle with truthy value', function () {
-    const p = pipe();
-    const el = div(toggleClass(p, 'test'));
+    let p = pipe();
+    let el = div(toggleClass(p, 'test'));
 
     p.send('yes');
 
@@ -65,8 +64,8 @@ describe('toggle class', function () {
   });
 
   test('toggle off with falsy value', function () {
-    const p = pipe();
-    const el = div(toggleClass(p, 'test'));
+    let p = pipe();
+    let el = div(toggleClass(p, 'test'));
 
     p.send('yes');
     p.send('');
@@ -79,8 +78,8 @@ describe('toggle class', function () {
 describe('dynamicProp', function () {
 
   test('set a prop using a pipe', function () {
-    const p = pipe();
-    const el = button(dynamicProp(p, 'disabled'));
+    let p = pipe();
+    let el = button(dynamicProp(p, 'disabled'));
 
     p.send(true);
 
@@ -88,8 +87,8 @@ describe('dynamicProp', function () {
   });
 
   test('set text content', function () {
-    const p = pipe();
-    const el = div(dynamicProp(p, 'textContent'), 'Hello, test!');
+    let p = pipe();
+    let el = div(dynamicProp(p, 'textContent'), 'Hello, test!');
 
     p.send('Hello, World!');
 
@@ -97,15 +96,15 @@ describe('dynamicProp', function () {
   });
 
   test('for property', function () {
-    const p = pipe();
-    const el = span(dynamicProp(p, 'for'), {for: 'email'});
+    let p = pipe();
+    let el = span(dynamicProp(p, 'for'), { for: 'email' });
     p.send('password');
     expect(el.htmlFor).toBe('password');
   });
 
   test('style rule', function () {
-    const p = pipe();
-    const el = span(dynamicProp(p, 'style.backgroundColor'));
+    let p = pipe();
+    let el = span(dynamicProp(p, 'style.backgroundColor'));
     p.send('blue');
     expect(el.style.backgroundColor).toBe('blue');
   });
@@ -115,21 +114,21 @@ describe('dynamicProp', function () {
 describe('hotswap', function () {
 
   test('will render the default', function () {
-    const p = pipe();
-    const def = div();
-    const alt = span();
+    let p = pipe();
+    let def = div();
+    let alt = span();
 
-    const res = hotswap(p, def, alt);
+    let res = hotswap(p, def, alt);
 
     expect(res).toBe(def);
   });
 
   test('will render the alt element once pipe is updated', function () {
-    const p = pipe();
-    const def = div();
-    const alt = span();
+    let p = pipe();
+    let def = div();
+    let alt = span();
 
-    const parent = div(hotswap(p, def, alt));
+    let parent = div(hotswap(p, def, alt));
     p.send(true);
 
     expect(parent.firstChild).toBe(alt);
@@ -137,11 +136,11 @@ describe('hotswap', function () {
   });
 
   test('will keep the alt element if pipe does not toggle', function () {
-    const p = pipe();
-    const def = div();
-    const alt = span();
+    let p = pipe();
+    let def = div();
+    let alt = span();
 
-    const parent = div(hotswap(p, def, alt));
+    let parent = div(hotswap(p, def, alt));
     p.send(true);
     p.send(true);
 
@@ -150,11 +149,11 @@ describe('hotswap', function () {
   });
 
   test('will swap back to default if pipe toggles', function () {
-    const p = pipe();
-    const def = div();
-    const alt = span();
+    let p = pipe();
+    let def = div();
+    let alt = span();
 
-    const parent = div(hotswap(p, def, alt));
+    let parent = div(hotswap(p, def, alt));
     p.send(true);
     p.send(false);
 
@@ -163,11 +162,11 @@ describe('hotswap', function () {
   });
 
   test('swap with a delay if element has a removeClass prop', function () {
-    const p = pipe();
-    const def = div({removeClass: 'foo'});
-    const alt = span();
+    let p = pipe();
+    let def = div({ removeClass: 'foo' });
+    let alt = span();
 
-    const parent = div(hotswap(p, def, alt));
+    let parent = div(hotswap(p, def, alt));
     p.send(true);
 
     expect(parent.firstChild).toBe(def);
@@ -184,16 +183,16 @@ describe('hotswap', function () {
 describe('dynamicText', function () {
 
   test('renders a text node', function () {
-    const p = pipe();
-    const el = dynamicText(p, 'Hello, World!');
+    let p = pipe();
+    let el = dynamicText(p, 'Hello, World!');
 
     expect(el).toBeInstanceOf(Text);
-    expect(el.textContent).toBe('Hello, World!')
+    expect(el.textContent).toBe('Hello, World!');
   });
 
   test('update the text', function () {
-    const p = pipe();
-    const el = dynamicText(p, 'Hello, World!');
+    let p = pipe();
+    let el = dynamicText(p, 'Hello, World!');
 
     p.send('Hello, hyperscribe!');
 
@@ -201,8 +200,8 @@ describe('dynamicText', function () {
   });
 
   test('use in a hyperscribe node', function () {
-    const p = pipe();
-    const el = div('Hello, ', dynamicText(p, 'World'), '!');
+    let p = pipe();
+    let el = div('Hello, ', dynamicText(p, 'World'), '!');
 
     expect(el.textContent).toBe('Hello, World!');
 
@@ -215,8 +214,8 @@ describe('dynamicText', function () {
 
 describe('dynamicList', function () {
   function renderPerson (person, personPipe) {
-    const namePipe = personPipe.extend(function (next) {
-      return function(person) {
+    let namePipe = personPipe.extend(function (next) {
+      return function (person) {
         next(person.name);
       };
     });
@@ -227,12 +226,12 @@ describe('dynamicList', function () {
   }
 
   test('create a list of child nodes', function () {
-    const initial = [
-      {name: 'John', key: 'john'},
-      {name: 'Jane', key: 'jane'},
-    ]
-    const p = pipe();
-    const el = ul(
+    let initial = [
+      { name: 'John', key: 'john' },
+      { name: 'Jane', key: 'jane' },
+    ];
+    let p = pipe();
+    let el = ul(
       dynamicList(p, initial, renderPerson),
     );
 
@@ -240,16 +239,16 @@ describe('dynamicList', function () {
   });
 
   test('updating a property of a member', function () {
-    const initial = [
-      {name: 'John', key: 'john'},
-      {name: 'Jane', key: 'jane'},
-    ]
-    const p = pipe();
-    const el = ul(
+    let initial = [
+      { name: 'John', key: 'john' },
+      { name: 'Jane', key: 'jane' },
+    ];
+    let p = pipe();
+    let el = ul(
       dynamicList(p, initial, renderPerson),
     );
 
-    const firstChild = el.firstChild;
+    let firstChild = el.firstChild;
     initial[0].name = 'Ben';
     p.send(initial);
 
@@ -258,12 +257,12 @@ describe('dynamicList', function () {
   });
 
   test('change order', function () {
-    const initial = [
-      {name: 'John', key: 'john'},
-      {name: 'Jane', key: 'jane'},
-    ]
-    const p = pipe();
-    const el = ul(
+    let initial = [
+      { name: 'John', key: 'john' },
+      { name: 'Jane', key: 'jane' },
+    ];
+    let p = pipe();
+    let el = ul(
       dynamicList(p, initial, renderPerson),
     );
 
@@ -276,28 +275,28 @@ describe('dynamicList', function () {
   });
 
   test('append item', function () {
-    const initial = [
-      {name: 'John', key: 'john'},
-      {name: 'Jane', key: 'jane'},
-    ]
-    const p = pipe();
-    const el = ul(
+    let initial = [
+      { name: 'John', key: 'john' },
+      { name: 'Jane', key: 'jane' },
+    ];
+    let p = pipe();
+    let el = ul(
       dynamicList(p, initial, renderPerson),
     );
 
-    initial.push({name: 'Bob', key: 'bob'});
+    initial.push({ name: 'Bob', key: 'bob' });
     p.send(initial);
 
     expect(prettyPrint(el.outerHTML)).toMatchSnapshot();
   });
 
   test('pop item', function () {
-    const initial = [
-      {name: 'John', key: 'john'},
-      {name: 'Jane', key: 'jane'},
-    ]
-    const p = pipe();
-    const el = ul(
+    let initial = [
+      { name: 'John', key: 'john' },
+      { name: 'Jane', key: 'jane' },
+    ];
+    let p = pipe();
+    let el = ul(
       dynamicList(p, initial, renderPerson),
     );
 
@@ -308,34 +307,34 @@ describe('dynamicList', function () {
   });
 
   test('insert item', function () {
-    const initial = [
-      {name: 'John', key: 'john'},
-      {name: 'Jane', key: 'jane'},
-    ]
-    const p = pipe();
-    const el = ul(
+    let initial = [
+      { name: 'John', key: 'john' },
+      { name: 'Jane', key: 'jane' },
+    ];
+    let p = pipe();
+    let el = ul(
       dynamicList(p, initial, renderPerson),
     );
 
-    initial.splice(1, 0, {name: 'Bob', key: 'bob'});
+    initial.splice(1, 0, { name: 'Bob', key: 'bob' });
     p.send(initial);
 
     expect(prettyPrint(el.outerHTML)).toMatchSnapshot();
   });
 
   test('custom key function', function () {
-    function keyFn(person) {
+    function keyFn (person) {
       return person.eid;
-    };
-    const initial = [
-      {name: 'John', eid: 33},
-      {name: 'Jane', eid: 61},
-    ]
-    const p = pipe();
-    const el = ul(
+    }
+    let initial = [
+      { name: 'John', eid: 33 },
+      { name: 'Jane', eid: 61 },
+    ];
+    let p = pipe();
+    let el = ul(
       dynamicList(p, initial, renderPerson, keyFn),
     );
-    const firstChild = el.firstChild;
+    let firstChild = el.firstChild;
 
     initial[0].name = 'Bob';
     p.send(initial);

@@ -25,8 +25,8 @@
     "rollup-plugin-node-resolve": "^5.0.1"
   },
   "dependencies": {
-    "hyperscribe": "^1.0.2",
-    "transplexer": "^1.0.1"
+    "hyperscribe": "^1.0.3",
+    "transplexer": "^1.1.0"
   },
   "files": [
     "dist"
