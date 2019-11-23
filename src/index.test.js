@@ -7,7 +7,7 @@ import {
   dynamicProp,
   hotswap,
   dynamicText,
-  dynamicList,
+  dynamicList, toggle,
 } from './index';
 
 describe('bind', function () {
@@ -123,13 +123,23 @@ describe('hotswap', function () {
     expect(res).toBe(def);
   });
 
+  test('render alt with initial state flag', function () {
+    let p = pipe();
+    let def = div();
+    let alt = span();
+
+    let res = hotswap(p, def, alt, false);
+
+    expect(res).toBe(alt);
+  });
+
   test('will render the alt element once pipe is updated', function () {
     let p = pipe();
     let def = div();
     let alt = span();
 
     let parent = div(hotswap(p, def, alt));
-    p.send(true);
+    p.send(false);
 
     expect(parent.firstChild).toBe(alt);
     expect(def.parentNode).toBe(null);
@@ -141,8 +151,8 @@ describe('hotswap', function () {
     let alt = span();
 
     let parent = div(hotswap(p, def, alt));
-    p.send(true);
-    p.send(true);
+    p.send(false);
+    p.send(false);
 
     expect(parent.firstChild).toBe(alt);
     expect(def.parentNode).toBe(null);
@@ -154,8 +164,8 @@ describe('hotswap', function () {
     let alt = span();
 
     let parent = div(hotswap(p, def, alt));
-    p.send(true);
     p.send(false);
+    p.send(true);
 
     expect(parent.firstChild).toBe(def);
     expect(alt.parentNode).toBe(null);
@@ -167,7 +177,7 @@ describe('hotswap', function () {
     let alt = span();
 
     let parent = div(hotswap(p, def, alt));
-    p.send(true);
+    p.send(false);
 
     expect(parent.firstChild).toBe(def);
     expect(def.classList.contains('foo')).toBe(true);
@@ -208,6 +218,50 @@ describe('dynamicText', function () {
     p.send('transplexer');
 
     expect(el.textContent).toBe('Hello, transplexer!');
+  });
+
+});
+
+describe('toggle', function () {
+
+  test('render the default element', function () {
+    let p = pipe();
+    let el = div();
+
+    let res = toggle(p, el);
+
+    expect(res).toBe(el);
+  });
+
+  test('render a comment with the initial visibility', function () {
+    let p = pipe();
+    let el = div();
+
+    let res = toggle(p, el, false);
+
+    expect(res).toEqual(document.createComment('blank'));
+  });
+
+  test('render the comment when pipe toggles', function () {
+    let p = pipe();
+    let el = div();
+
+    let parent = div(toggle(p, el));
+    p.send(false);
+
+    expect(el.parentNode).toBeNull();
+    expect(parent.firstChild).toEqual(document.createComment('blank'));
+  });
+
+  test('swap back to default element', function () {
+    let p = pipe();
+    let el = div();
+
+    let parent = div(toggle(p, el));
+    p.send(false);
+    p.send(true);
+
+    expect(el.parentNode).toBe(parent);
   });
 
 });
@@ -326,6 +380,7 @@ describe('dynamicList', function () {
     function keyFn (person) {
       return person.eid;
     }
+
     let initial = [
       { name: 'John', eid: 33 },
       { name: 'Jane', eid: 61 },

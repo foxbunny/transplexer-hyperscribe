@@ -75,14 +75,17 @@ export function dynamicProp (pipe, propName) {
  *
  * The value from the pipe is interpreted as follows:
  *
- * - `false` is default
- * - `true` is alternative
+ * - `true` is default
+ * - `false` is alternative
  *
- * When the pipe value is `false`, the default element replaces the alternative
+ * When the pipe value is `true`, the default element replaces the alternative
  * one (or is kept in the tree if already present). Otherwise, the alternative
  * one is inserted/kept instead.
+ *
+ * The `initialState` argument can be set to `true` in order to render the `alt`
+ * element initially.
  */
-export function hotswap (pipe, defaultEl, altEl) {
+export function hotswap (pipe, defaultEl, altEl, initialState = true) {
   function swapElements (old, next) {
     if (!old.parentNode) {
       return;
@@ -104,13 +107,22 @@ export function hotswap (pipe, defaultEl, altEl) {
 
   pipe.connect(function (flag) {
     if (flag) {
-      swapElements(defaultEl, altEl);
-    }
-    else {
       swapElements(altEl, defaultEl);
     }
+    else {
+      swapElements(defaultEl, altEl);
+    }
   });
-  return defaultEl;
+  return initialState ? defaultEl : altEl;
+}
+
+/**
+ * Toggle an element on-off
+ *
+ * This is a wrapper around `hotswap` where one of the elements is a comment.
+ */
+export function toggle (pipe, el, initialVisibility = true) {
+  return hotswap(pipe, el, document.createComment('blank'), initialVisibility);
 }
 
 export function dynamicText (pipe, initialText) {
