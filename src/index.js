@@ -92,7 +92,7 @@ export function hotswap (pipe, defaultEl, altEl, initialState = true) {
     }
 
     if (old.removeClass) {
-      let removeListener = onTransimationEnd(old, function (e) {
+      let removeListener = onTransimationEnd(old, function () {
         old.parentNode.replaceChild(next, old);
         old.classList.remove(old.removeClass);
         if (typeof old.onremove === 'function') old.onremove();
