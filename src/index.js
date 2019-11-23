@@ -125,6 +125,9 @@ export function toggle (pipe, el, initialVisibility = true) {
   return hotswap(pipe, el, document.createComment('blank'), initialVisibility);
 }
 
+/**
+ * Dynamically update the `textContent` based on a pipe
+ */
 export function dynamicText (pipe, initialText) {
   let textNode = document.createTextNode(initialText);
   pipe.connect(function (text) {
