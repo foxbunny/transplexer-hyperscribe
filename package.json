@@ -1,6 +1,6 @@
 {
   "name": "transplexer-hyperscribe",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Transplexer integration for hyperscribe",
   "main": "dist/transplexer-hyperscribe.js",
   "module": "dist/transplexer-hyperscribe.mjs",
